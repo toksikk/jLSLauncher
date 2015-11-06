@@ -8,7 +8,7 @@ import com.ixab.GUI.StreamChooserMenu;
 import javax.swing.*;
 
 public class Main {
-    private final static double version = 0.1;
+    private final static double version = 0.2;
     private static Config c = null;
     public static void main(String[] args) {
         try {

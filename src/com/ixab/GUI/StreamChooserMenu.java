@@ -1,11 +1,9 @@
 package com.ixab.GUI;
 
-import com.ixab.*;
-import com.ixab.ConfigHandling.Config;
 import com.ixab.ConfigHandling.ConfigFileIOHandler;
 import com.ixab.ConfigHandling.ConfigFileInstanceHandler;
+import com.ixab.StreamHandling.StreamInfo;
 import com.ixab.StreamHandling.StreamOpener;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,19 +13,23 @@ import java.awt.event.KeyEvent;
 
 public class StreamChooserMenu {
     private JPanel panel;
-    private JComboBox comboBox1;
+    private JComboBox comboBoxStreams;
     private JComboBox comboBox2;
     private JTextField textField1;
     private JButton hinzufügenButton;
     private JButton streamAbspielenButton;
     private JButton entfernenButton;
+    private JLabel labelStreamStatus;
+    private JLabel labelStreamViewers;
+    private JLabel labelStreamTitle;
+    private JLabel labelStreamGame;
 
     public StreamChooserMenu() {
         this.initComboBoxes();
         streamAbspielenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                StreamOpener so = new StreamOpener(ConfigFileInstanceHandler.getConfig(), ConfigFileInstanceHandler.getConfig().getStreams().indexOf(comboBox1.getSelectedItem()), comboBox2.getSelectedItem().toString());
+                StreamOpener so = new StreamOpener(ConfigFileInstanceHandler.getConfig(), ConfigFileInstanceHandler.getConfig().getStreams().indexOf(comboBoxStreams.getSelectedItem()), comboBox2.getSelectedItem().toString());
                 so.start();
             }
         });
@@ -40,15 +42,20 @@ public class StreamChooserMenu {
         entfernenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ConfigFileInstanceHandler.getConfig().removeStream(comboBox1.getSelectedItem());
+                ConfigFileInstanceHandler.getConfig().removeStream(comboBoxStreams.getSelectedItem());
                 ConfigFileIOHandler.save(ConfigFileInstanceHandler.getConfig());
                 initStreamsComboBox();
             }
         });
-        comboBox1.addActionListener(new ActionListener() {
+        comboBoxStreams.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO: implement twitch api and update stream info
+                StreamInfo.getStreamInfo(comboBoxStreams.getSelectedItem().toString());
+                labelStreamStatus.setText(StreamInfo.getStatus());
+                labelStreamGame.setText(StreamInfo.getGame());
+                labelStreamViewers.setText(StreamInfo.getViewers());
+                labelStreamTitle.setText(StreamInfo.getTitle());
             }
         });
         textField1.addKeyListener(new KeyAdapter() {
@@ -72,10 +79,10 @@ public class StreamChooserMenu {
         initStreamsComboBox();
     }
     private void initStreamsComboBox() {
-        comboBox1.removeAllItems();
+        comboBoxStreams.removeAllItems();
         for (String streamName :
                 ConfigFileInstanceHandler.getConfig().getStreams()) {
-            comboBox1.addItem(streamName);
+            comboBoxStreams.addItem(streamName);
         }
     }
     private void initQualityComboBox() {
