@@ -2,7 +2,7 @@ package com.ixab.ConfigHandling;
 
 import java.io.*;
 
-public class ConfigFileHandler {
+public class ConfigFileIOHandler {
     public static Config load(String path) {
         Config c = null;
         try
@@ -33,7 +33,7 @@ public class ConfigFileHandler {
             out.writeObject(c);
             out.close();
             fileOut.close();
-            System.out.printf("Config data is saved in config.dat");
+            System.out.println("Config data is saved in config.dat");
         }catch(IOException i)
         {
             i.printStackTrace();

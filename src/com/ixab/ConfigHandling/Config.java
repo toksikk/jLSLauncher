@@ -17,11 +17,14 @@ public class Config implements Serializable {
     }
 
     public String getStreamName(int streamIndex) {
-        return this.streamNames.get(streamIndex-1);
+        return this.streamNames.get(streamIndex);
     }
 
     public void addStream(String streamName) {
         this.streamNames.add(streamName);
+    }
+    public void removeStream(Object streamName) {
+        this.streamNames.remove(streamName);
     }
     public ArrayList<String> getStreams() {
         return this.streamNames;

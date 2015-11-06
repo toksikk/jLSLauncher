@@ -1,28 +1,25 @@
 package com.ixab;
 
 import com.ixab.ConfigHandling.Config;
-import com.ixab.ConfigHandling.ConfigFileHandler;
-import com.ixab.StreamHandling.StreamOpener;
+import com.ixab.ConfigHandling.ConfigFileIOHandler;
+import com.ixab.ConfigHandling.ConfigFileInstanceHandler;
+import com.ixab.GUI.StreamChooserMenu;
 
 public class Main {
-    private static boolean running = true;
-    public static void exitProgram() {
-        running = false;
-    }
+    private static Config c = null;
     public static void main(String[] args) {
-        while (running) {
-            // TODO: config dialog
-            // TODO: stream choosing
+        //ConfigLoadMenu.main(null);
+        c = ConfigFileIOHandler.load();
+        if (c == null) {
+            initNewConfig();
+            c = ConfigFileIOHandler.load();
         }
-        // begin test
-        //Config c = new Config();
-        Config c = ConfigFileHandler.load();
-        //c.addStream("cohhcarnage");
-        //c.setLSPath("e:\\downloads\\livestreamer-v1.11.1\\livestreamer.exe");
-        //ConfigFileHandler.save(c);
-
-        StreamOpener so = new StreamOpener(c, 1, "best");
-        so.start();
-        // end test
+        ConfigFileInstanceHandler.setConfig(c);
+        StreamChooserMenu.main(null);
+    }
+    public static void initNewConfig() {
+        c = new Config();
+        c.setLSPath("e:\\downloads\\livestreamer-v1.11.1\\livestreamer.exe");
+        ConfigFileIOHandler.save(c);
     }
 }
