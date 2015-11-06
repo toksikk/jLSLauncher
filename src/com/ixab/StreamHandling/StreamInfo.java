@@ -43,51 +43,51 @@ public class StreamInfo {
         }
     }
     public static void getStreamInfo(String streamName) {
-        InputStream is = null;
-        URL url = null;
-        JSONObject object = null;
-        StringBuilder urlBuilder = new StringBuilder();
-        urlBuilder.append("https://api.twitch.tv/kraken/streams/");
+        if (streamName != null) {
+            InputStream is = null;
+            URL url = null;
+            JSONObject object = null;
+            StringBuilder urlBuilder = new StringBuilder();
+            urlBuilder.append("https://api.twitch.tv/kraken/streams/");
 
-        urlBuilder.append(streamName);
+            urlBuilder.append(streamName);
 
-        String URLString = urlBuilder.toString();
+            String URLString = urlBuilder.toString();
 
-        try {
-            url = new URL(URLString);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        try {
-            is = url.openStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader br = new BufferedReader(isr);
-
-        try {
-            String line;
-            StringBuilder sb = new StringBuilder();
-            while ((line = br.readLine()) != null)
-            {
-                sb.append(line);
+            try {
+                url = new URL(URLString);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             }
-            object = new JSONObject(sb.toString());
+            try {
+                is = url.openStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(isr);
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                String line;
+                StringBuilder sb = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                object = new JSONObject(sb.toString());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String result = object.get("stream").toString();
+
+            if (result == "null") {
+                streamData = null;
+                streamPreviewData = null;
+            } else {
+                streamData = new JSONObject(result);
+                streamPreviewData = new JSONObject(streamData.get("preview").toString());
+            }
         }
-
-        String result = object.get("stream").toString();
-
-        if (result == "null") {
-            streamData = null;
-            streamPreviewData = null;
-        } else {
-            streamData = new JSONObject(result);
-            streamPreviewData = new JSONObject(streamData.get("preview").toString());
-        }
-
     }
 }
