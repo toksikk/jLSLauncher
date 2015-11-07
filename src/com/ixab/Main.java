@@ -40,7 +40,13 @@ public class Main {
     }
     public static void initNewConfig() {
         c = new Config();
-        c.setLSPath("e:\\downloads\\livestreamer-v1.11.1\\livestreamer.exe");
+        JFrame jf = new JFrame();
+        JFileChooser jfc = new JFileChooser();
+        jfc.setDialogTitle("Livestreamer Programmdatei auswählen");
+        jfc.showOpenDialog(jf);
+        if (jfc.getSelectedFile() == null) System.exit(-1);
+        c.setLSPath(jfc.getSelectedFile().getAbsolutePath());
+        jf.dispose();
         ConfigFileIOHandler.save(c);
     }
 
