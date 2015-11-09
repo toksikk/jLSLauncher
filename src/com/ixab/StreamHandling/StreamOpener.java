@@ -23,6 +23,8 @@ public class StreamOpener extends Thread {
 
             String line=null;
 
+            // comment
+
             while((line=input.readLine()) != null) {
                 System.out.println(line);
             }
