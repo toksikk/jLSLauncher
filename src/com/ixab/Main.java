@@ -3,12 +3,12 @@ package com.ixab;
 import com.ixab.ConfigHandling.Config;
 import com.ixab.ConfigHandling.ConfigFileIOHandler;
 import com.ixab.ConfigHandling.ConfigFileInstanceHandler;
-import com.ixab.GUI.StreamChooserMenu;
+import com.ixab.GUI.MainWindow;
 
 import javax.swing.*;
 
 public class Main {
-    private final static double version = 0.2;
+    private final static String version = "0.3 Alpha";
     private static Config c = null;
     public static void main(String[] args) {
         try {
@@ -29,14 +29,14 @@ public class Main {
             // handle exception
         }
 
-        //ConfigLoadMenu.main(null);
+        //ConfigLoadMenu.create(null);
         c = ConfigFileIOHandler.load();
         if (c == null) {
             initNewConfig();
             c = ConfigFileIOHandler.load();
         }
         ConfigFileInstanceHandler.setConfig(c);
-        StreamChooserMenu.main(null);
+        MainWindow.main(null);
     }
     public static void initNewConfig() {
         c = new Config();
@@ -50,7 +50,7 @@ public class Main {
         ConfigFileIOHandler.save(c);
     }
 
-    public static double getVersion() {
+    public static String getVersion() {
         return version;
     }
 }

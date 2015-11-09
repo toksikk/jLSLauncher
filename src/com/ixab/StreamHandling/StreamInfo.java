@@ -42,7 +42,7 @@ public class StreamInfo {
             return "online";
         }
     }
-    public static void getStreamInfo(String streamName) {
+    public static void initStreamData(String streamName) {
         if (streamName != null) {
             InputStream is = null;
             URL url = null;

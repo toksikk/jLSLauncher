@@ -8,7 +8,7 @@ import com.ixab.StreamHandling.StreamOpener;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class StreamChooserMenu {
+public class MainWindow {
     private JPanel panel;
     private JComboBox comboBoxStreams;
     private JComboBox comboBoxQuality;
@@ -21,9 +21,18 @@ public class StreamChooserMenu {
     private JLabel labelStreamTitle;
     private JLabel labelStreamGame;
     private JButton neuLadenButton;
-    private boolean lockStreamInfoGetter = false;
+    private JPanel previewImagePanel;
+    private JButton einstellungenButton;
 
-    public StreamChooserMenu() {
+    protected JLabel getErrorLabel() {
+        return errorLabel;
+    }
+
+    private JLabel errorLabel;
+    protected boolean lockStreamInfoGetter = false;
+
+    public MainWindow() {
+        MainWindowGate.setMainWindow(this);
         this.initComboBoxes();
         streamAbspielenButton.addActionListener(new ActionListener() {
             @Override
@@ -56,42 +65,36 @@ public class StreamChooserMenu {
                 }
             }
         });
-        textField1.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
-                if (textField1.isFocusOwner() && e.getKeyCode() == 10) {
-                    addNewStream();
-                }
-            }
-        });
         neuLadenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateStreamDetails();
             }
         });
+        einstellungenButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SettingsWindow sw = new SettingsWindow();
+                sw.create();
+            }
+        });
     }
     private void updateStreamDetails() {
-        StreamInfo.getStreamInfo(comboBoxStreams.getSelectedItem().toString());
+        StreamInfo.initStreamData(comboBoxStreams.getSelectedItem().toString());
         labelStreamStatus.setText(StreamInfo.getStatus());
         labelStreamGame.setText(StreamInfo.getGame());
         labelStreamViewers.setText(StreamInfo.getViewers());
         labelStreamTitle.setText(StreamInfo.getTitle());
     }
     private void addNewStream() {
-        ConfigFileInstanceHandler.getConfig().addStream(textField1.getText());
-        ConfigFileIOHandler.save(ConfigFileInstanceHandler.getConfig());
-        lockStreamInfoGetter = true;
-        initStreamsComboBox();
-        lockStreamInfoGetter = false;
-        textField1.setText("");
+        AddStreamDialog as = new AddStreamDialog();
+        as.create();
     }
     private void initComboBoxes() {
         initQualityComboBox();
         initStreamsComboBox();
     }
-    private void initStreamsComboBox() {
+    protected void initStreamsComboBox() {
         comboBoxStreams.removeAllItems();
         for (String streamName :
                 ConfigFileInstanceHandler.getConfig().getStreams()) {
@@ -103,11 +106,12 @@ public class StreamChooserMenu {
         comboBoxQuality.addItem("best"); comboBoxQuality.addItem("high"); comboBoxQuality.addItem("medium"); comboBoxQuality.addItem("low"); comboBoxQuality.addItem("mobile");
     }
     public static void main(String[] args) {
-        JFrame frame = new JFrame("jLSLauncher v"+ com.ixab.Main.getVersion());
-        frame.setContentPane(new StreamChooserMenu().panel);
+        JFrame frame = new JFrame("jLSLauncher "+ com.ixab.Main.getVersion());
+        frame.setContentPane(new MainWindow().panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
+        frame.setResizable(false);
     }
 }
