@@ -17,7 +17,6 @@ public class StreamOpener extends Thread {
     public void run() {
         try {
             Runtime rt = Runtime.getRuntime();
-            //Process pr = rt.exec("cmd /c dir");
             Process pr = rt.exec(c.getLSPath()+" twitch.tv/"+c.getStreamName(streamIndex)+" "+quality);
 
             BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
