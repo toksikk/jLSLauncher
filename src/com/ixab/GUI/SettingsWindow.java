@@ -1,6 +1,8 @@
 package com.ixab.GUI;
 
+import com.ixab.ConfigHandling.ConfigFileIOHandler;
 import com.ixab.ConfigHandling.ConfigFileInstanceHandler;
+import com.ixab.UserInfoHandling.UserInfo;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -12,6 +14,8 @@ public class SettingsWindow extends JDialog {
     private JCheckBox debugmodusCheckBox;
     private JTextField textField1;
     private JButton suchenButton;
+    private JTextField twitchBenutzernameTextField;
+    private JButton buttonImportUserData;
 
     public SettingsWindow() {
         textField1.setText(ConfigFileInstanceHandler.getConfig().getLSPath());
@@ -54,10 +58,25 @@ public class SettingsWindow extends JDialog {
                 if (jfc.getSelectedFile() != null) textField1.setText(jfc.getSelectedFile().getAbsolutePath());
             }
         });
+        buttonImportUserData.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                UserInfo.initUserFollowData(twitchBenutzernameTextField.getText());
+                UserInfo.getFollowedChannelNames();
+            }
+        });
+        twitchBenutzernameTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                twitchBenutzernameTextField.setText("");
+            }
+        });
     }
 
     private void onOK() {
-// add your code here
+        ConfigFileInstanceHandler.getConfig().setLSPath(textField1.getText());
+        ConfigFileIOHandler.save(ConfigFileInstanceHandler.getConfig());
         dispose();
     }
 

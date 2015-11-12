@@ -8,7 +8,7 @@ import com.ixab.GUI.MainWindow;
 import javax.swing.*;
 
 public class Main {
-    private final static String version = "0.3 Alpha";
+    private final static String version = "0.4 Alpha";
     private static Config c = null;
     public static void main(String[] args) {
         try {
@@ -28,8 +28,6 @@ public class Main {
         catch (IllegalAccessException e) {
             // handle exception
         }
-
-        //ConfigLoadMenu.create(null);
         c = ConfigFileIOHandler.load();
         if (c == null) {
             initNewConfig();

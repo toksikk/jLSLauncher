@@ -12,17 +12,17 @@ public class MainWindow {
     private JPanel panel;
     private JComboBox comboBoxStreams;
     private JComboBox comboBoxQuality;
-    private JTextField textField1;
-    private JButton hinzufügenButton;
-    private JButton streamAbspielenButton;
-    private JButton entfernenButton;
-    private JLabel labelStreamStatus;
-    private JLabel labelStreamViewers;
-    private JLabel labelStreamTitle;
-    private JLabel labelStreamGame;
-    private JButton neuLadenButton;
-    private JPanel previewImagePanel;
-    private JButton einstellungenButton;
+    private JButton buttonAddStream;
+    private JButton buttonPlayStream;
+    private JButton buttonRemoveStream;
+    private JTextField textFieldStreamStatus;
+    private JTextField textFieldStreamViewers;
+    private JTextField textFieldStreamTitle;
+    private JTextField textFieldStreamGame;
+    private JButton buttonReloadStreamData;
+    private JPanel panelPreviewImage;
+    private JButton buttonSettings;
+    private Thread updateThread;
 
     protected JLabel getErrorLabel() {
         return errorLabel;
@@ -34,20 +34,20 @@ public class MainWindow {
     public MainWindow() {
         MainWindowGate.setMainWindow(this);
         this.initComboBoxes();
-        streamAbspielenButton.addActionListener(new ActionListener() {
+        buttonPlayStream.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 StreamOpener so = new StreamOpener(ConfigFileInstanceHandler.getConfig(), ConfigFileInstanceHandler.getConfig().getStreams().indexOf(comboBoxStreams.getSelectedItem()), comboBoxQuality.getSelectedItem().toString());
                 so.start();
             }
         });
-        hinzufügenButton.addActionListener(new ActionListener() {
+        buttonAddStream.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addNewStream();
             }
         });
-        entfernenButton.addActionListener(new ActionListener() {
+        buttonRemoveStream.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ConfigFileInstanceHandler.getConfig().removeStream(comboBoxStreams.getSelectedItem());
@@ -65,13 +65,13 @@ public class MainWindow {
                 }
             }
         });
-        neuLadenButton.addActionListener(new ActionListener() {
+        buttonReloadStreamData.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateStreamDetails();
             }
         });
-        einstellungenButton.addActionListener(new ActionListener() {
+        buttonSettings.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SettingsWindow sw = new SettingsWindow();
@@ -80,11 +80,26 @@ public class MainWindow {
         });
     }
     private void updateStreamDetails() {
-        StreamInfo.initStreamData(comboBoxStreams.getSelectedItem().toString());
-        labelStreamStatus.setText(StreamInfo.getStatus());
-        labelStreamGame.setText(StreamInfo.getGame());
-        labelStreamViewers.setText(StreamInfo.getViewers());
-        labelStreamTitle.setText(StreamInfo.getTitle());
+        if (updateThread != null) {
+            if (updateThread.isAlive()) {
+                updateThread.interrupt();
+            }
+        }
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                StreamInfo.initStreamData(comboBoxStreams.getSelectedItem().toString());
+                textFieldStreamStatus.setText(StreamInfo.getStatus());
+                textFieldStreamGame.setText(StreamInfo.getGame());
+                textFieldStreamViewers.setText(StreamInfo.getViewers());
+                textFieldStreamTitle.setText(StreamInfo.getTitle());
+                panelPreviewImage.getGraphics().drawImage(StreamInfo.getPreviewImage(),0,0,null);
+            }
+        };
+        Thread t = new Thread(r);
+        this.updateThread = t;
+        t.start();
+        ErrorMessageGate.setErrorText("Lade Stream-Daten von " + comboBoxStreams.getSelectedItem().toString() + "...");
     }
     private void addNewStream() {
         AddStreamDialog as = new AddStreamDialog();
