@@ -2,6 +2,7 @@ package com.ixab.UserInfoHandling;
 
 import com.ixab.GUI.ErrorMessageGate;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -10,19 +11,30 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class UserInfo {
-    private static JSONArray userFollowData;
+    private static JSONArray userFollowData; // TODO: change this to an arraylist of multiple jsonarrays
     private static String userFollowCount;
 
     private static int getFollowCount() {
-        return Integer.getInteger(userFollowCount);
+        return Integer.parseInt(userFollowCount);
     }
     public static ArrayList<String> getFollowedChannelNames() {
         ArrayList<String> names = new ArrayList<String>();
-        System.out.println(userFollowData.toString()); // TODO: implement something to work with
+        for (int i = 0; i<getFollowCount(); i++) {
+            try {
+                JSONObject followed = new JSONObject(userFollowData.get(i).toString());
+                JSONObject channel = new JSONObject(followed.get("channel").toString());
+                System.out.println(i+" "+channel.get("display_name").toString()); //remove this line if not needed anymore
+                names.add(channel.get("display_name").toString());
+                // TODO: bisher nur maximal 100 importieren wegen twitch api.
+            } catch (JSONException e) {
+                // workaround for stupid limit of jsonarrays of twitch's api.
+                // there's nothing interesting to show.
+            }
+        }
         return names;
     }
 
-    public static boolean initUserFollowData(String userName) {
+    public static boolean initUserFollowData(String userName, int offset) {
         if (userName != null) {
             InputStream is = null;
             URL url = null;
@@ -32,7 +44,9 @@ public class UserInfo {
 
             urlBuilder.append(userName);
 
-            urlBuilder.append("/follows/channels");
+            urlBuilder.append("/follows/channels?direction=DESC&limit=100&offset=");
+
+            urlBuilder.append(offset);
 
             String URLString = urlBuilder.toString();
 
@@ -67,7 +81,7 @@ public class UserInfo {
                 e.printStackTrace();
             }
 
-            String result = object.get("_total").toString();
+            String result = object.get("_total").toString(); // TODO: reagiere hier auf >100, weil dann mehrere jsonarrays benötigt werden.
 
             if (result == "null") {
                 userFollowData = null;

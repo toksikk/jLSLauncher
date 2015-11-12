@@ -61,8 +61,29 @@ public class SettingsWindow extends JDialog {
         buttonImportUserData.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                UserInfo.initUserFollowData(twitchBenutzernameTextField.getText());
-                UserInfo.getFollowedChannelNames();
+                final String old = buttonImportUserData.getText();
+                buttonImportUserData.setText("bitte warten...");
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (UserInfo.initUserFollowData(twitchBenutzernameTextField.getText(), 0)) {
+                            UserInfo.getFollowedChannelNames();
+                            // TODO: prüfe ob channel schon vorhanden sind
+                            for (String name :
+                                    UserInfo.getFollowedChannelNames()) {
+                                ConfigFileInstanceHandler.getConfig().addStream(name);
+                            }
+                            ConfigFileIOHandler.save(ConfigFileInstanceHandler.getConfig());
+                            MainWindowGate.getMainWindow().lockStreamInfoGetter = true;
+                            MainWindowGate.getMainWindow().initStreamsComboBox();
+                            MainWindowGate.getMainWindow().lockStreamInfoGetter = false;
+                        }
+                        buttonImportUserData.setText(old);
+                        ErrorMessageGate.setErrorText("Streams von "+twitchBenutzernameTextField.getText()+" hinzugefügt.");
+                    }
+                };
+                Thread t = new Thread(r);
+                t.start();
             }
         });
         twitchBenutzernameTextField.addFocusListener(new FocusAdapter() {
