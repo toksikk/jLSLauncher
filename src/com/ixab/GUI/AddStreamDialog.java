@@ -51,6 +51,7 @@ public class AddStreamDialog extends JDialog {
         MainWindowGate.getMainWindow().lockStreamInfoGetter = true;
         MainWindowGate.getMainWindow().initStreamsComboBox();
         MainWindowGate.getMainWindow().lockStreamInfoGetter = false;
+        ErrorMessageGate.setErrorText("Stream \""+textField1.getText()+"\" hinzugefügt.");
         textField1.setText("");
         dispose();
     }

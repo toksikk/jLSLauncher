@@ -39,6 +39,7 @@ public class MainWindow {
             public void actionPerformed(ActionEvent e) {
                 StreamOpener so = new StreamOpener(ConfigFileInstanceHandler.getConfig(), ConfigFileInstanceHandler.getConfig().getStreams().indexOf(comboBoxStreams.getSelectedItem()), comboBoxQuality.getSelectedItem().toString());
                 so.start();
+                ErrorMessageGate.setErrorText("Starte Livestreamer für Channel \""+comboBoxStreams.getSelectedItem().toString()+"\"...");
             }
         });
         buttonAddStream.addActionListener(new ActionListener() {
@@ -94,6 +95,7 @@ public class MainWindow {
                 textFieldStreamViewers.setText(StreamInfo.getViewers());
                 textFieldStreamTitle.setText(StreamInfo.getTitle());
                 panelPreviewImage.getGraphics().drawImage(StreamInfo.getPreviewImage(),0,0,null);
+                ErrorMessageGate.setErrorText("Stream-Daten von "+comboBoxStreams.getSelectedItem().toString() + " geladen/aktualisiert.");
             }
         };
         Thread t = new Thread(r);
