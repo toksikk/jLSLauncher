@@ -47,7 +47,7 @@ public class StreamInfo {
     }
     public static BufferedImage getPreviewImage() {
         if (streamPreviewData == null) {
-            BufferedImage c = new BufferedImage(1,1,0);
+            BufferedImage c = new BufferedImage(1,1,1);
             return c;
         } else {
             URL url = null;

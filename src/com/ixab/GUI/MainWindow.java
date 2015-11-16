@@ -2,6 +2,7 @@ package com.ixab.GUI;
 
 import com.ixab.ConfigHandling.ConfigFileIOHandler;
 import com.ixab.ConfigHandling.ConfigFileInstanceHandler;
+import com.ixab.ConfigHandling.StreamConfigItem;
 import com.ixab.StreamHandling.StreamInfo;
 import com.ixab.StreamHandling.StreamOpener;
 
@@ -32,8 +33,39 @@ public class MainWindow {
     protected boolean lockStreamInfoGetter = false;
 
     public MainWindow() {
+
+        //TODO: Updater thread
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                for (final StreamConfigItem sci :
+                        ConfigFileInstanceHandler.getConfig().getStreams()) {
+                    Runnable r2 = new Runnable() {
+                        @Override
+                        public void run() {
+                            sci.refreshInfo();
+                        }
+                    };
+                    Thread t2 = new Thread(r2);
+                    t2.start();
+                }
+                makeAPause(60000);
+            }
+            private void makeAPause(long time) {
+                try {
+                    System.out.println("schläft "+time/1000.0+" sek");
+                    Thread.sleep(time);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        Thread t = new Thread(r);
+        t.start();
+
+
         MainWindowGate.setMainWindow(this);
-        this.initComboBoxes();
+        this.refreshComboBoxes();
         buttonPlayStream.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -54,7 +86,7 @@ public class MainWindow {
                 ConfigFileInstanceHandler.getConfig().removeStream(comboBoxStreams.getSelectedItem());
                 ConfigFileIOHandler.save(ConfigFileInstanceHandler.getConfig());
                 lockStreamInfoGetter = true;
-                initStreamsComboBox();
+                refreshStreamsComboBox();
                 lockStreamInfoGetter = false;
             }
         });
@@ -89,13 +121,15 @@ public class MainWindow {
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                StreamInfo.initStreamData(comboBoxStreams.getSelectedItem().toString());
-                textFieldStreamStatus.setText(StreamInfo.getStatus());
-                textFieldStreamGame.setText(StreamInfo.getGame());
-                textFieldStreamViewers.setText(StreamInfo.getViewers());
-                textFieldStreamTitle.setText(StreamInfo.getTitle());
-                panelPreviewImage.getGraphics().drawImage(StreamInfo.getPreviewImage(),0,0,null);
-                ErrorMessageGate.setErrorText("Stream-Daten von "+comboBoxStreams.getSelectedItem().toString() + " geladen/aktualisiert.");
+                //StreamInfo.initStreamData(comboBoxStreams.getSelectedItem().toString());
+                StreamConfigItem sci = (StreamConfigItem) comboBoxStreams.getSelectedItem();
+                sci.refreshInfo();
+                textFieldStreamStatus.setText(sci.getStatusString());
+                textFieldStreamGame.setText(sci.getCategory());
+                textFieldStreamViewers.setText(""+sci.getViewers()); // TODO: schöner machen
+                textFieldStreamTitle.setText(sci.getTitle());
+                panelPreviewImage.getGraphics().drawImage(sci.getPreviewImage(),0,0,null);
+                ErrorMessageGate.setErrorText("Stream-Daten von "+sci.getName()+ " geladen/aktualisiert.");
             }
         };
         Thread t = new Thread(r);
@@ -107,18 +141,18 @@ public class MainWindow {
         AddStreamDialog as = new AddStreamDialog();
         as.create();
     }
-    private void initComboBoxes() {
-        initQualityComboBox();
-        initStreamsComboBox();
+    private void refreshComboBoxes() {
+        refreshQualityComboBox();
+        refreshStreamsComboBox();
     }
-    protected void initStreamsComboBox() {
+    protected void refreshStreamsComboBox() {
         comboBoxStreams.removeAllItems();
-        for (String streamName :
+        for (StreamConfigItem stream :
                 ConfigFileInstanceHandler.getConfig().getStreams()) {
-            comboBoxStreams.addItem(streamName);
+            comboBoxStreams.addItem(stream);
         }
     }
-    private void initQualityComboBox() {
+    private void refreshQualityComboBox() {
         comboBoxQuality.removeAllItems();
         comboBoxQuality.addItem("best"); comboBoxQuality.addItem("high"); comboBoxQuality.addItem("medium"); comboBoxQuality.addItem("low"); comboBoxQuality.addItem("mobile");
     }

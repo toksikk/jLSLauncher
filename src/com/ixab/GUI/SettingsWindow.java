@@ -75,7 +75,7 @@ public class SettingsWindow extends JDialog {
                             }
                             ConfigFileIOHandler.save(ConfigFileInstanceHandler.getConfig());
                             MainWindowGate.getMainWindow().lockStreamInfoGetter = true;
-                            MainWindowGate.getMainWindow().initStreamsComboBox();
+                            MainWindowGate.getMainWindow().refreshStreamsComboBox();
                             MainWindowGate.getMainWindow().lockStreamInfoGetter = false;
                         }
                         buttonImportUserData.setText(old);
