@@ -32,6 +32,8 @@ public class MainWindow {
 
     private JLabel errorLabel;
     private JButton buttonReloadStreamData;
+    private JButton vorherigerButton;
+    private JButton nächsterButton;
     private boolean lockStreamInfoGetter = false;
 
     public MainWindow() {
@@ -90,6 +92,26 @@ public class MainWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateStreamDetails();
+            }
+        });
+        nächsterButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (comboBoxStreams.getSelectedIndex()!=ConfigFileInstanceHandler.getConfig().getStreams().size()-1) {
+                    comboBoxStreams.setSelectedIndex(comboBoxStreams.getSelectedIndex() + 1);
+                } else {
+                    comboBoxStreams.setSelectedIndex(0);
+                }
+            }
+        });
+        vorherigerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (comboBoxStreams.getSelectedIndex()!=0) {
+                    comboBoxStreams.setSelectedIndex(comboBoxStreams.getSelectedIndex() - 1);
+                } else {
+                    comboBoxStreams.setSelectedIndex(ConfigFileInstanceHandler.getConfig().getStreams().size()-1);
+                }
             }
         });
     }
@@ -178,7 +200,11 @@ public class MainWindow {
                 ConfigFileInstanceHandler.getConfig().getStreams()) {
             comboBoxStreams.addItem(stream);
         }
-        comboBoxStreams.setSelectedItem(o);
+        if (o != null) {
+            comboBoxStreams.setSelectedItem(o);
+        } else {
+            comboBoxStreams.setSelectedIndex(0);
+        }
     }
     private void refreshQualityComboBox() {
         comboBoxQuality.removeAllItems();

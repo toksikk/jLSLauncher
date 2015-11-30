@@ -3,12 +3,13 @@ package com.ixab;
 import com.ixab.ConfigHandling.Config;
 import com.ixab.ConfigHandling.ConfigFileIOHandler;
 import com.ixab.ConfigHandling.ConfigFileInstanceHandler;
+import com.ixab.GUI.AlertWindow;
 import com.ixab.GUI.MainWindow;
 
 import javax.swing.*;
 
 public class Main {
-    private final static String version = "0.4 Alpha";
+    private final static String version = "0.5 Alpha";
     private static Config c = null;
     public static void main(String[] args) {
         try {
