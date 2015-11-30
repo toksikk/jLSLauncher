@@ -1,5 +1,6 @@
 package com.ixab.ConfigHandling;
 
+import com.ixab.Logging.Logger;
 import com.ixab.StreamHandling.StreamInfo;
 
 import java.awt.image.BufferedImage;
@@ -32,6 +33,7 @@ public class StreamConfigItem implements Serializable {
         this.category = StreamInfo.getGame();
     }
     public void refreshInfo() {
+        Logger.print("Refreshing stream data for " + this.name, this);
         this.getInfo();
     }
 

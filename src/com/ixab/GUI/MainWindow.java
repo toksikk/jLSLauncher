@@ -6,6 +6,7 @@ import com.ixab.ConfigHandling.StreamConfigItem;
 import com.ixab.ConfigHandling.StreamConfigSorter;
 import com.ixab.Logging.Logger;
 import com.ixab.StreamHandling.StreamOpener;
+import javafx.event.EventDispatcher;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -202,7 +203,7 @@ public class MainWindow {
         }
         if (o != null) {
             comboBoxStreams.setSelectedItem(o);
-        } else {
+        } else if (comboBoxStreams.getItemCount()>0) {
             comboBoxStreams.setSelectedIndex(0);
         }
     }

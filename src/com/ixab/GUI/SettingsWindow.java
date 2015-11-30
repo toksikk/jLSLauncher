@@ -11,7 +11,7 @@ public class SettingsWindow extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JCheckBox debugmodusCheckBox;
+    private JCheckBox nichtImplementiertCheckBox;
     private JTextField textField1;
     private JButton suchenButton;
     private JTextField twitchBenutzernameTextField;

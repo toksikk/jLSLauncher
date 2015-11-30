@@ -65,12 +65,12 @@
               <text value="Pfad zu Livestreamer:"/>
             </properties>
           </component>
-          <component id="42a4f" class="javax.swing.JCheckBox" binding="debugmodusCheckBox" default-binding="true">
+          <component id="42a4f" class="javax.swing.JCheckBox" binding="nichtImplementiertCheckBox" default-binding="true">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value=""/>
+              <text value=" (nicht implementiert)"/>
             </properties>
           </component>
           <component id="e34b3" class="javax.swing.JLabel">
