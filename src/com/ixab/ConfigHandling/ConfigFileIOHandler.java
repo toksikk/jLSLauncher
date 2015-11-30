@@ -1,5 +1,7 @@
 package com.ixab.ConfigHandling;
 
+import com.ixab.Logging.Logger;
+
 import java.io.*;
 
 public class ConfigFileIOHandler {
@@ -18,7 +20,7 @@ public class ConfigFileIOHandler {
             return null;
         }catch(ClassNotFoundException e)
         {
-            System.out.println("Config class not found");
+            Logger.print("Config class not found");
             e.printStackTrace();
             return null;
         }
@@ -33,7 +35,7 @@ public class ConfigFileIOHandler {
             out.writeObject(c);
             out.close();
             fileOut.close();
-            System.out.println("Config data is saved in config.dat");
+            Logger.print("Config data is saved in config.dat");
         }catch(IOException i)
         {
             i.printStackTrace();
@@ -44,5 +46,8 @@ public class ConfigFileIOHandler {
     }
     public static void save(Config c) {
         save(c, "config.dat");
+    }
+    public static void save() {
+        save(ConfigFileInstanceHandler.getConfig(), "config.dat");
     }
 }

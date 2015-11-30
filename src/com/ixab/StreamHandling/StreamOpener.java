@@ -2,6 +2,7 @@ package com.ixab.StreamHandling;
 
 import com.ixab.ConfigHandling.Config;
 import com.ixab.GUI.MainWindow;
+import com.ixab.Logging.Logger;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -25,15 +26,15 @@ public class StreamOpener extends Thread {
             String line=null;
 
             while((line=input.readLine()) != null) {
-                System.out.println(line);
+                Logger.print(line, this);
                 // TODO: analyze livestreamer output and inform gui on errors
             }
 
             int exitVal = pr.waitFor();
-            System.out.println("Exited with error code " + exitVal);
+            Logger.print("Exited with error code " + exitVal, this);
 
         } catch(Exception e) {
-            System.out.println(e.toString());
+            Logger.print(e.toString(), this);
             e.printStackTrace();
         }
     }

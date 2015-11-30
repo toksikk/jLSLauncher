@@ -4,6 +4,7 @@ import com.ixab.ConfigHandling.ConfigFileIOHandler;
 import com.ixab.ConfigHandling.ConfigFileInstanceHandler;
 import com.ixab.ConfigHandling.StreamConfigItem;
 import com.ixab.ConfigHandling.StreamConfigSorter;
+import com.ixab.Logging.Logger;
 import com.ixab.StreamHandling.StreamOpener;
 
 import javax.swing.*;
@@ -31,7 +32,7 @@ public class MainWindow {
 
     private JLabel errorLabel;
     private JButton buttonReloadStreamData;
-    protected boolean lockStreamInfoGetter = false;
+    private boolean lockStreamInfoGetter = false;
 
     public MainWindow() {
 
@@ -93,6 +94,12 @@ public class MainWindow {
         });
     }
     private void startUpdaterThread() {
+        if (updateThread != null) {
+            if (updateThread.isAlive()) {
+                updateThread.interrupt();
+                Logger.print("Thread interrupted", this);
+            }
+        }
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -117,7 +124,7 @@ public class MainWindow {
             }
             private void makeAPause(long time) {
                 try {
-                    System.out.println("schläft "+time/1000.0+" sek");
+                    Logger.print("schläft "+time/1000.0+" sek", this);
                     Thread.sleep(time);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -125,12 +132,14 @@ public class MainWindow {
             }
         };
         Thread t = new Thread(r);
+        this.updateThread = t;
         t.start();
     }
     private void updateStreamDetails() {
         if (updateThread != null) {
             if (updateThread.isAlive()) {
                 updateThread.interrupt();
+                Logger.print("Thread interrupted" , this);
             }
         }
         Runnable r = new Runnable() {

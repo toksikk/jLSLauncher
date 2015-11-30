@@ -48,9 +48,7 @@ public class AddStreamDialog extends JDialog {
     private void onOK() {
         ConfigFileInstanceHandler.getConfig().addStream(textField1.getText());
         ConfigFileIOHandler.save(ConfigFileInstanceHandler.getConfig());
-        MainWindowGate.getMainWindow().lockStreamInfoGetter = true;
         MainWindowGate.getMainWindow().refreshStreamsComboBox();
-        MainWindowGate.getMainWindow().lockStreamInfoGetter = false;
         ErrorMessageGate.setErrorText("Stream \""+textField1.getText()+"\" hinzugefügt.");
         textField1.setText("");
         dispose();

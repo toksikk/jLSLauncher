@@ -74,9 +74,7 @@ public class SettingsWindow extends JDialog {
                                 ConfigFileInstanceHandler.getConfig().addStream(name);
                             }
                             ConfigFileIOHandler.save(ConfigFileInstanceHandler.getConfig());
-                            MainWindowGate.getMainWindow().lockStreamInfoGetter = true;
                             MainWindowGate.getMainWindow().refreshStreamsComboBox();
-                            MainWindowGate.getMainWindow().lockStreamInfoGetter = false;
                         }
                         buttonImportUserData.setText(old);
                         ErrorMessageGate.setErrorText("Streams von "+twitchBenutzernameTextField.getText()+" hinzugefügt.");

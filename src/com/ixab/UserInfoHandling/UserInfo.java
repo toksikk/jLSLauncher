@@ -1,6 +1,7 @@
 package com.ixab.UserInfoHandling;
 
 import com.ixab.GUI.ErrorMessageGate;
+import com.ixab.Logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +24,7 @@ public class UserInfo {
             try {
                 JSONObject followed = new JSONObject(userFollowData.get(i).toString());
                 JSONObject channel = new JSONObject(followed.get("channel").toString());
-                System.out.println(i+" "+channel.get("name").toString()); //remove this line if not needed anymore
+                Logger.print(i + " " + channel.get("name").toString()); //remove this line if not needed anymore
                 names.add(channel.get("name").toString());
                 // TODO: bisher nur maximal 100 importieren wegen twitch api.
             } catch (JSONException e) {
