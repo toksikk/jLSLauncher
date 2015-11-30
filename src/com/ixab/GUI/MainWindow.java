@@ -3,7 +3,7 @@ package com.ixab.GUI;
 import com.ixab.ConfigHandling.ConfigFileIOHandler;
 import com.ixab.ConfigHandling.ConfigFileInstanceHandler;
 import com.ixab.ConfigHandling.StreamConfigItem;
-import com.ixab.StreamHandling.StreamInfo;
+import com.ixab.ConfigHandling.StreamConfigSorter;
 import com.ixab.StreamHandling.StreamOpener;
 
 import javax.swing.*;
@@ -20,7 +20,7 @@ public class MainWindow {
     private JTextField textFieldStreamViewers;
     private JTextField textFieldStreamTitle;
     private JTextField textFieldStreamGame;
-    private JButton buttonReloadStreamData;
+    private JButton buttonReloadAllStreamData;
     private JPanel panelPreviewImage;
     private JButton buttonSettings;
     private Thread updateThread;
@@ -30,38 +30,12 @@ public class MainWindow {
     }
 
     private JLabel errorLabel;
+    private JButton buttonReloadStreamData;
     protected boolean lockStreamInfoGetter = false;
 
     public MainWindow() {
 
-        //TODO: Updater thread
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                for (final StreamConfigItem sci :
-                        ConfigFileInstanceHandler.getConfig().getStreams()) {
-                    Runnable r2 = new Runnable() {
-                        @Override
-                        public void run() {
-                            sci.refreshInfo();
-                        }
-                    };
-                    Thread t2 = new Thread(r2);
-                    t2.start();
-                }
-                makeAPause(60000);
-            }
-            private void makeAPause(long time) {
-                try {
-                    System.out.println("schläft "+time/1000.0+" sek");
-                    Thread.sleep(time);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        Thread t = new Thread(r);
-        t.start();
+        this.startUpdaterThread();
 
 
         MainWindowGate.setMainWindow(this);
@@ -98,10 +72,10 @@ public class MainWindow {
                 }
             }
         });
-        buttonReloadStreamData.addActionListener(new ActionListener() {
+        buttonReloadAllStreamData.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                updateStreamDetails();
+                startUpdaterThread();
             }
         });
         buttonSettings.addActionListener(new ActionListener() {
@@ -111,6 +85,47 @@ public class MainWindow {
                 sw.create();
             }
         });
+        buttonReloadStreamData.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateStreamDetails();
+            }
+        });
+    }
+    private void startUpdaterThread() {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                for (final StreamConfigItem sci :
+                        ConfigFileInstanceHandler.getConfig().getStreams()) {
+                    Runnable r2 = new Runnable() {
+                        @Override
+                        public void run() {
+                            sci.refreshInfo();
+                        }
+                    };
+                    Thread t2 = new Thread(r2);
+                    t2.start();
+                }
+                makeAPause(60000);
+
+                ConfigFileInstanceHandler.getConfig().replaceStreamList(
+                        StreamConfigSorter.sortStreamItemArrayList(
+                                ConfigFileInstanceHandler.getConfig().getStreams()
+                        ));
+                refreshComboBoxes();
+            }
+            private void makeAPause(long time) {
+                try {
+                    System.out.println("schläft "+time/1000.0+" sek");
+                    Thread.sleep(time);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        Thread t = new Thread(r);
+        t.start();
     }
     private void updateStreamDetails() {
         if (updateThread != null) {
@@ -142,15 +157,19 @@ public class MainWindow {
         as.create();
     }
     private void refreshComboBoxes() {
+        lockStreamInfoGetter = true;
         refreshQualityComboBox();
         refreshStreamsComboBox();
+        lockStreamInfoGetter = false;
     }
     protected void refreshStreamsComboBox() {
+        Object o = comboBoxStreams.getSelectedItem();
         comboBoxStreams.removeAllItems();
         for (StreamConfigItem stream :
                 ConfigFileInstanceHandler.getConfig().getStreams()) {
             comboBoxStreams.addItem(stream);
         }
+        comboBoxStreams.setSelectedItem(o);
     }
     private void refreshQualityComboBox() {
         comboBoxQuality.removeAllItems();

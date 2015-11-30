@@ -23,8 +23,8 @@ public class UserInfo {
             try {
                 JSONObject followed = new JSONObject(userFollowData.get(i).toString());
                 JSONObject channel = new JSONObject(followed.get("channel").toString());
-                System.out.println(i+" "+channel.get("display_name").toString()); //remove this line if not needed anymore
-                names.add(channel.get("display_name").toString());
+                System.out.println(i+" "+channel.get("name").toString()); //remove this line if not needed anymore
+                names.add(channel.get("name").toString());
                 // TODO: bisher nur maximal 100 importieren wegen twitch api.
             } catch (JSONException e) {
                 // workaround for stupid limit of jsonarrays of twitch's api.
