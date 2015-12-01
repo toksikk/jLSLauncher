@@ -6,11 +6,43 @@ import java.util.ArrayList;
 public class Config implements Serializable {
     private String LSPath;
     private ArrayList<StreamConfigItem> streamItems;
+
+    public int getSortStreamsBy() {
+        return sortStreamsBy;
+    }
+
+    public void setSortStreamsBy(int sortStreamsBy) {
+        this.sortStreamsBy = sortStreamsBy;
+    }
+
+    private int sortStreamsBy;
+
+    public int getLastSelectedStream() {
+        return lastSelectedStream;
+    }
+
+    public void setLastSelectedStream(int lastSelectedStream) {
+        this.lastSelectedStream = lastSelectedStream;
+    }
+
+    private int lastSelectedStream;
+    public int getLastSelectedQuality() {
+        return lastSelectedQuality;
+    }
+    public void setLastSelectedQuality(int lastSelectedQuality) {
+        this.lastSelectedQuality = lastSelectedQuality;
+        ConfigFileIOHandler.save();
+    }
+    private int lastSelectedQuality;
     public Config() {
         this.streamItems = new ArrayList<StreamConfigItem>();
+        setSortStreamsBy(1);
+        setLastSelectedStream(-1);
+        setLastSelectedQuality(-1);
     }
     public void setLSPath(String path) {
         this.LSPath = path;
+        ConfigFileIOHandler.save();
     }
     public String getLSPath() {
         return this.LSPath;
@@ -21,9 +53,11 @@ public class Config implements Serializable {
     }
     public void addStream(String streamName) {
         this.streamItems.add(new StreamConfigItem(streamName));
+        ConfigFileIOHandler.save();
     }
     public void removeStream(Object stream) {
         this.streamItems.remove(stream);
+        ConfigFileIOHandler.save();
     }
     public ArrayList<StreamConfigItem> getStreams() {
         return this.streamItems;
@@ -33,5 +67,6 @@ public class Config implements Serializable {
     }
     public void replaceStreamList(ArrayList<StreamConfigItem> list) {
         this.streamItems = list;
+        ConfigFileIOHandler.save();
     }
 }

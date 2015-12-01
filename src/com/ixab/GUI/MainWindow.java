@@ -6,7 +6,7 @@ import com.ixab.ConfigHandling.StreamConfigItem;
 import com.ixab.ConfigHandling.StreamConfigSorter;
 import com.ixab.Logging.Logger;
 import com.ixab.StreamHandling.StreamOpener;
-import javafx.event.EventDispatcher;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -63,9 +63,7 @@ public class MainWindow {
             public void actionPerformed(ActionEvent e) {
                 ConfigFileInstanceHandler.getConfig().removeStream(comboBoxStreams.getSelectedItem());
                 ConfigFileIOHandler.save(ConfigFileInstanceHandler.getConfig());
-                lockStreamInfoGetter = true;
                 refreshStreamsComboBox();
-                lockStreamInfoGetter = false;
             }
         });
         comboBoxStreams.addActionListener(new ActionListener() {
@@ -74,6 +72,7 @@ public class MainWindow {
                 if (!lockStreamInfoGetter) {
                     updateStreamDetails();
                 }
+                ConfigFileInstanceHandler.getConfig().setLastSelectedStream(comboBoxStreams.getSelectedIndex());
             }
         });
         buttonReloadAllStreamData.addActionListener(new ActionListener() {
@@ -113,6 +112,12 @@ public class MainWindow {
                 } else {
                     comboBoxStreams.setSelectedIndex(ConfigFileInstanceHandler.getConfig().getStreams().size()-1);
                 }
+            }
+        });
+        comboBoxQuality.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ConfigFileInstanceHandler.getConfig().setLastSelectedQuality(comboBoxQuality.getSelectedIndex());
             }
         });
     }
@@ -189,12 +194,11 @@ public class MainWindow {
         as.create();
     }
     private void refreshComboBoxes() {
-        lockStreamInfoGetter = true;
         refreshQualityComboBox();
         refreshStreamsComboBox();
-        lockStreamInfoGetter = false;
     }
     protected void refreshStreamsComboBox() {
+        lockStreamInfoGetter = true;
         Object o = comboBoxStreams.getSelectedItem();
         comboBoxStreams.removeAllItems();
         for (StreamConfigItem stream :
@@ -204,12 +208,30 @@ public class MainWindow {
         if (o != null) {
             comboBoxStreams.setSelectedItem(o);
         } else if (comboBoxStreams.getItemCount()>0) {
-            comboBoxStreams.setSelectedIndex(0);
+            if (ConfigFileInstanceHandler.getConfig().getLastSelectedStream() == -1) {
+                comboBoxStreams.setSelectedIndex(0);
+            } else {
+                comboBoxStreams.setSelectedIndex(ConfigFileInstanceHandler.getConfig().getLastSelectedStream());
+            }
         }
+        if (o == null && comboBoxStreams.getItemCount()>0) {
+            comboBoxStreams.setSelectedIndex(ConfigFileInstanceHandler.getConfig().getLastSelectedStream());
+        }
+        lockStreamInfoGetter = false;
     }
     private void refreshQualityComboBox() {
+        Object o = comboBoxQuality.getSelectedItem();
         comboBoxQuality.removeAllItems();
         comboBoxQuality.addItem("best"); comboBoxQuality.addItem("high"); comboBoxQuality.addItem("medium"); comboBoxQuality.addItem("low"); comboBoxQuality.addItem("mobile");
+        if (o != null) {
+            comboBoxQuality.setSelectedItem(o);
+        }
+        if (ConfigFileInstanceHandler.getConfig().getLastSelectedQuality() == -1) {
+            ConfigFileInstanceHandler.getConfig().setLastSelectedQuality(comboBoxQuality.getSelectedIndex());
+        } else {
+            comboBoxQuality.setSelectedIndex(ConfigFileInstanceHandler.getConfig().getLastSelectedQuality());
+        }
+
     }
     public static void main(String[] args) {
         JFrame frame = new JFrame("jLSLauncher "+ com.ixab.Main.getVersion());

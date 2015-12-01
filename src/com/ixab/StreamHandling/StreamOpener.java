@@ -18,6 +18,7 @@ public class StreamOpener extends Thread {
     }
     public void run() {
         try {
+            Logger.print("Starting stream livestreamer for "+this.streamName+" at "+this.quality+" quality");
             Runtime rt = Runtime.getRuntime();
             Process pr = rt.exec(this.c.getLSPath()+" twitch.tv/"+this.streamName+" "+this.quality);
 
