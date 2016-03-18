@@ -9,7 +9,7 @@ import com.ixab.GUI.MainWindow;
 import javax.swing.*;
 
 public class Main {
-    private final static String version = "0.51 Alpha";
+    private final static String version = "0.52 Alpha";
     private static Config c = null;
     public static void main(String[] args) {
         try {
@@ -45,6 +45,7 @@ public class Main {
         jfc.showOpenDialog(jf);
         if (jfc.getSelectedFile() == null) System.exit(-1);
         c.setLSPath(jfc.getSelectedFile().getAbsolutePath());
+        c.setProxy("");
         jf.dispose();
         ConfigFileIOHandler.save(c);
     }

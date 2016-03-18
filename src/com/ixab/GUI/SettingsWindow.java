@@ -16,9 +16,11 @@ public class SettingsWindow extends JDialog {
     private JButton suchenButton;
     private JTextField twitchBenutzernameTextField;
     private JButton buttonImportUserData;
+    private JTextField textFieldProxy;
 
     public SettingsWindow() {
         textField1.setText(ConfigFileInstanceHandler.getConfig().getLSPath());
+        textFieldProxy.setText(ConfigFileInstanceHandler.getConfig().getProxy());
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -95,6 +97,7 @@ public class SettingsWindow extends JDialog {
 
     private void onOK() {
         ConfigFileInstanceHandler.getConfig().setLSPath(textField1.getText());
+        ConfigFileInstanceHandler.getConfig().setProxy(textFieldProxy.getText());
         ConfigFileIOHandler.save(ConfigFileInstanceHandler.getConfig());
         dispose();
     }

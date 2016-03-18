@@ -17,6 +17,8 @@ public class Config implements Serializable {
 
     private int sortStreamsBy;
 
+    private String proxy;
+
     public int getLastSelectedStream() {
         return lastSelectedStream;
     }
@@ -68,5 +70,12 @@ public class Config implements Serializable {
     public void replaceStreamList(ArrayList<StreamConfigItem> list) {
         this.streamItems = list;
         ConfigFileIOHandler.save();
+    }
+
+    public String getProxy() {
+        return proxy;
+    }
+    public void setProxy(String proxy) {
+        this.proxy = proxy;
     }
 }
