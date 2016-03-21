@@ -39,3 +39,5 @@ Hier bitte einfach die zuvor entpackte `livestreamer.exe` auswählen. Rest sollt
 
 Bevorzugt bitte den Issue-Tracker nutzen: https://dev.ixab.de/da/jLSLauncher/issues  
 Alternativ Bug Reports bitte per Email an da-bugreport@ixab.de
+
+Für detaillierte Fehlermeldungen bitte das Programm über die Kommandozeile starten.
