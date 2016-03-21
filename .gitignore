@@ -1,4 +1,5 @@
-/out
+/out/production
+/out/artifacts/jLSLauncher_jar/config.dat
 /.idea
 /jLSLauncher.iml
 /config.dat
