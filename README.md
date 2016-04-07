@@ -1,28 +1,28 @@
 # jLSLauncher - Livestreamer launching utility
 ### Download
 
-Eine vorkompilierte `.jar`-Datei kann hier heruntergeladen werden: https://dev.ixab.de/da/jLSLauncher/raw/master/out/artifacts/jLSLauncher_jar/jLSLauncher.jar
+A pre-compiled `.jar`-file can be downloaded here: https://dev.ixab.de/da/jLSLauncher/raw/master/out/artifacts/jLSLauncher_jar/jLSLauncher.jar
 
 ### Benötigte Software
 
-* Java (mindestens v7) - https://www.java.com/de/download/
-* Livestreamer (Hinweise weiter unten)
+* Java (minimum required is v7) - https://www.java.com/de/download/
+* Livestreamer
 
-### Installation von Livestreamer (Windows)
+### Installation of Livestreamer (Windows)
 
-1. Livestreamer-Download für Windows: http://docs.livestreamer.io/install.html#zip-archive
-2. Das zip-Archiv in einen beliebigen Pfad entpacken.
+1. Download Livestreamer for Windows: http://docs.livestreamer.io/install.html#zip-archive
+2. Extract the Zip-File to a folder of your choice.
 
-### Installation von Livestreamer (Linux)
+### Installation of Livestreamer (Linux)
 
-Installation von Livestreamer unter Linux sollte mit dem gängigen Paketmanager funktionieren.  
-Alternativ hier vorbeischauen: http://docs.livestreamer.io/install.html
+Please use your distribution's packet manager. 
+Optionally you can download Livestreamer here: http://docs.livestreamer.io/install.html
 
 ### Installation von jLSLauncher
 
-`jLSLauncher.jar` benötigt keine Installation und ist direkt ausführbar.  
-Das Programm kann nach belieben verschoben oder kopiert werden.  
-Bitte beachten, dass ggf. die Datei `config.dat` auch verschoben werden muss.
+`jLSLauncher.jar` does not need an installation and can be executed as is.  
+You can move or copy this tool to any other location you like.  
+The configuration is stored in a file named `config.dat` which, if present, has to be moved to the same location.
 
 ### Benutzung von jLSLauncher
 
