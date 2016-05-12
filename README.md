@@ -24,20 +24,18 @@ Optionally you can download Livestreamer here: http://docs.livestreamer.io/insta
 You can move or copy this tool to any other location you like.  
 The configuration is stored in a file named `config.dat` which, if present, has to be moved to the same location.
 
-### Benutzung von jLSLauncher
+### Usage of jLSLauncher
 
-Doppelklick `jLSLauncher.jar`.  
-Sollte keine Datei-Assoziierung für `*.jar` Dateien im System hinterlegt sein, muss das Programm
-über die Konsole/Shell mit folgendem Befehl gestartet werden:
+Double click `jLSLauncher.jar`.
+If there is no program associated to launching `*.jar` files, jLSLauncher has to be launched via console/shell with the following commands:
 * Windows: `java -jar X:\Pfad\zu\jLSLauncher.jar`
 * Linux: `java -jar /pfad/zu/jLSLauncher.jar`
 
-Beim ersten Start von jLSLauncher öffnet sich zunächst nur ein *Datei öffnen*-Dialog.  
-Hier bitte einfach die zuvor entpackte `livestreamer.exe` auswählen. Rest sollte selbsterklärend sein.
+At the first start of jLSLauncher a *Open file* dialog is displayed. You'll have to point this to the previously extracted `livestreamer.exe` or `livestreamer` binary file on Linux.
 
 ### Bug Reports
 
-Bevorzugt bitte den Issue-Tracker nutzen: https://dev.ixab.de/da/jLSLauncher/issues  
-Alternativ Bug Reports bitte per Email an da-bugreport@ixab.de
+Please use the Issue-Tracker at: https://dev.ixab.de/da/jLSLauncher/issues
+Alternative method is to write a mail to da-bugreport@ixab.de
 
-Für detaillierte Fehlermeldungen bitte das Programm über die Kommandozeile starten.
+For detailed debug output, please start jLSLauncher via console or shell.
