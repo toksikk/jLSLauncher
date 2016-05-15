@@ -3,7 +3,7 @@
 
 A pre-compiled `.jar`-file can be downloaded here: https://dev.ixab.de/da/jLSLauncher/raw/master/out/artifacts/jLSLauncher_jar/jLSLauncher.jar
 
-### Benötigte Software
+### Required Software
 
 * Java (minimum required is v7) - https://www.java.com/de/download/
 * Livestreamer
