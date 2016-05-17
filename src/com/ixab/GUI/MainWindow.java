@@ -9,6 +9,7 @@ import com.ixab.StreamHandling.StreamOpener;
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 public class MainWindow {
@@ -240,6 +241,7 @@ public class MainWindow {
         frame.pack();
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
-        frame.setResizable(false);
+        frame.setResizable(true);
+        frame.setMinimumSize(new Dimension(680, 400));
     }
 }
