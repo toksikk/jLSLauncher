@@ -1,4 +1,6 @@
 /out/production
+/.idea
+/jLSLauncher.iml
 /out/artifacts/jLSLauncher_jar/config.dat
 /config.dat
 # Created by .ignore support plugin (hsz.mobi)
