@@ -5,11 +5,12 @@ import com.ixab.ConfigHandling.ConfigFileIOHandler;
 import com.ixab.ConfigHandling.ConfigFileInstanceHandler;
 import com.ixab.GUI.AlertWindow;
 import com.ixab.GUI.MainWindow;
+import com.ixab.Logging.Logger;
 
 import javax.swing.*;
 
 public class Main {
-    private final static String version = "0.52 Alpha";
+    private final static String version = "0.55 Alpha";
     private static Config c = null;
     public static void main(String[] args) {
         try {

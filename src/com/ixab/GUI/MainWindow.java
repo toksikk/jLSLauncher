@@ -242,6 +242,6 @@ public class MainWindow {
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
         frame.setResizable(true);
-        frame.setMinimumSize(new Dimension(680, 400));
+        frame.setMinimumSize(new Dimension(680, 440));
     }
 }

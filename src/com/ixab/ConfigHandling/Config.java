@@ -33,7 +33,6 @@ public class Config implements Serializable {
     }
     public void setLastSelectedQuality(int lastSelectedQuality) {
         this.lastSelectedQuality = lastSelectedQuality;
-        ConfigFileIOHandler.save();
     }
     private int lastSelectedQuality;
     public Config() {

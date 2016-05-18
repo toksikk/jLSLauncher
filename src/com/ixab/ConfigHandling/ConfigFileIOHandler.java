@@ -1,53 +1,61 @@
 package com.ixab.ConfigHandling;
 
+import com.cedarsoftware.util.io.JsonReader;
+import com.cedarsoftware.util.io.JsonWriter;
 import com.ixab.Logging.Logger;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class ConfigFileIOHandler {
     public static Config load(String path) {
-        Config c = null;
-        try
-        {
-            FileInputStream fileIn = new FileInputStream(path);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            c = (Config) in.readObject();
-            in.close();
-            fileIn.close();
-        }catch(IOException i)
-        {
-            i.printStackTrace();
+
+        String content;
+        StringBuilder sb = new StringBuilder();
+        try {
+            String line = null;
+            FileReader fr = new FileReader(path);
+            BufferedReader br = new BufferedReader(fr);
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
             return null;
-        }catch(ClassNotFoundException e)
-        {
-            Logger.print("Config class not found");
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
-        return c;
+        content = sb.toString();
+        Config c = (Config) JsonReader.jsonToJava(content);
+        if (c instanceof Config) {
+            Logger.print("Config loaded.");
+            return c;
+        } else {
+            return null;
+        }
     }
     public static void save(Config c, String path) {
-        try
-        {
-            FileOutputStream fileOut =
-                    new FileOutputStream("config.dat");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(c);
-            out.close();
-            fileOut.close();
-            Logger.print("Config data is saved in config.dat");
-        }catch(IOException i)
-        {
-            i.printStackTrace();
+        try {
+            FileWriter fw = new FileWriter(path);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(JsonWriter.formatJson(JsonWriter.objectToJson(c)));
+            bw.close();
+            Logger.print("Config saved.");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     public static Config load() {
-        return load("config.dat");
+        return load("config.json");
     }
     public static void save(Config c) {
-        save(c, "config.dat");
+        save(c, "config.json");
     }
     public static void save() {
-        save(ConfigFileInstanceHandler.getConfig(), "config.dat");
+        save(ConfigFileInstanceHandler.getConfig(), "config.json");
     }
 }

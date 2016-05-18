@@ -22,7 +22,7 @@ Optionally you can download Livestreamer here: http://docs.livestreamer.io/insta
 
 `jLSLauncher.jar` does not need an installation and can be executed as is.  
 You can move or copy this tool to any other location you like.  
-The configuration is stored in a file named `config.dat` which, if present, has to be moved to the same location.
+The configuration is stored in a file named `config.json` which, if present, has to be moved to the same location.
 
 ### Usage of jLSLauncher
 
